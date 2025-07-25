@@ -4,8 +4,8 @@ resource "aws_db_instance" "default" {
   engine               = "mysql"
   engine_version       = "8.0"
   instance_class       = "db.t3.micro"
-  #username             = jsonencode(data.aws_secretsmanager_secret_version.secretversion.secret_string["username"])
-  #password             = jsonencode(data.aws_secretsmanager_secret_version.secretversion.secret_string["password"])
+  #username             = jsondecode(data.aws_secretsmanager_secret_version.secretversion.secret_string["username"])
+  #password             = jsondecode(data.aws_secretsmanager_secret_version.secretversion.secret_string["password"])
   manage_master_user_password = true
   username = "admin"
   parameter_group_name = "default.mysql8.0"
@@ -59,6 +59,6 @@ resource "aws_secretsmanager_secret_version" "secretversion" {
         username="admin"
         password ="cloud123"
     })
-    depends_on = [ aws_db_instance.default ]
+      depends_on = [ aws_db_instance.default ]
   
 }
