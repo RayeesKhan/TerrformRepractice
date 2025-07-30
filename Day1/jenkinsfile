@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    parameters {
+    choice(name: 'action', choices: ['apply', 'destroy'], description: 'Terraform action to perform')
+}
+    environment {
+        loc = 'Day1'
+        }
+
+
+    stages {
+         stage('gitclone') {
+            steps {
+           git branch: 'main', url: 'https://github.com/RayeesKhan/TerrformRepractice.git'
+            }
+        }
+        
+        stage('init') {
+            steps {
+                dir("${env.loc}") {
+              sh 'terraform init'
+                }
+            }
+        }
+                stage('Plan') {
+            steps {
+                dir("${env.loc}") {
+              sh 'terraform plan'
+            }
+            }
+        }
+        stage('apply') {
+            steps {
+                dir("${env.loc}") {
+              sh 'terraform ${action} -auto-approve'
+            }
+            }
+        }
+    }
+}
